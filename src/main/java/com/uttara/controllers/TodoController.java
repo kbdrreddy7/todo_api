@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,21 +24,22 @@ public class TodoController {
 	
 	
 	
-	@RequestMapping(value = {"","/"}) // get all
+	//@RequestMapping(value = {"","/"},method=RequestMethod.GET) // get all
+	@GetMapping(value = {"","/"})
 	public List<Todo> getTodos() {
 		
 		System.out.println(" whs");
 	  return	todoService.getTodos();
 	}
 	
-	@RequestMapping(value="/{id}",method=RequestMethod.GET) // get one by id
+	@RequestMapping(value="/{id}",method=RequestMethod.GET) // get one by id   
 	public Todo getTodo(@PathVariable("id") Long id) {
 		
 	  return	todoService.getTodo(id);
 	}
 	
 	
-	@RequestMapping(value={"/"} ,method=RequestMethod.POST) // add one
+	@RequestMapping(value={"","/"} ,method=RequestMethod.POST) // add one
 	public Object addTodo(@RequestBody Todo bean) {
 	
 	 Map<String,Object>respoonse=new HashMap<String, Object>();
@@ -46,7 +48,6 @@ public class TodoController {
 	 
 		 if(errors==null)
 		 {
-			 System.out.println("success--------");
 			 bean= todoService.createTodo(bean);
 			 respoonse.put("status", "success");
 			 respoonse.put("data", bean);
@@ -54,7 +55,6 @@ public class TodoController {
 			 
 		 }
 		 else {
-			 System.out.println("---------fail"+errors);
 			 respoonse.put("status", "fail");
 			 respoonse.put("errors", errors);
 		}
@@ -76,6 +76,7 @@ public class TodoController {
 			 
 			 if(todoService.isExists(id)) {
 				 
+				 
 				 bean= todoService.updateTodo(id, bean);
 				 respoonse.put("status", "success");
 				 respoonse.put("data", bean);
@@ -96,15 +97,9 @@ public class TodoController {
 		
 	}
 	
-	
-
 	@RequestMapping(value="/{id}",method=RequestMethod.DELETE) // delete one by id
 	public boolean deleteTodo(@PathVariable("id") Long id) {
 		
 	  return	todoService.deleteTodo(id);
 	}
-	
-	
-	
-	
 }

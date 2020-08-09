@@ -27,7 +27,9 @@ public class TodoServiceImpl implements TodoService {
 		if(!isExists(sl))
 			return null;
 		
-		return todoRepo.getOne(sl);
+		return todoRepo.findById(sl).get();
+		
+	  //	return todoRepo.getOne(sl);   // it was giving error
 	}
 
 	@Override
